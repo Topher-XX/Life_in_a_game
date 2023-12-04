@@ -23,7 +23,7 @@ public class ItemSpawnerManager : MonoBehaviour
 
     private void Start()
     {
-        SpawnSpecificNbItems(20, transform.position, transform.rotation);
+        //SpawnSpecificNbItems(20, transform.position, transform.rotation);
         
     }
 
