@@ -194,8 +194,8 @@ TilemapRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 2083320653
+  m_SortingLayer: -2
   m_SortingOrder: 0
   m_ChunkSize: {x: 32, y: 32, z: 32}
   m_ChunkCullingBounds: {x: 0, y: 0, z: 0}
@@ -431,9 +431,11 @@ MonoBehaviour:
   floorTile: {fileID: 11400000, guid: d0d04bcb2d2f69e409efeb4b36546114, type: 2}
   wallTile: {fileID: 11400000, guid: c18e738dc228c82478ab79f80b03edc0, type: 2}
   destructibleWallTile: {fileID: 11400000, guid: b7065b98fe21b5c479d388f15d28c517, type: 2}
-  nbSecretRoom: 12
+  nbSecretRoom: 16
   secretRoomSize: 5
-  ObjectInRoom: []
+  itemProbability: 50
+  mobProbability: 30
+  chestProbability: 10
 --- !u!1 &2063922465
 GameObject:
   m_ObjectHideFlags: 0
@@ -552,9 +554,9 @@ TilemapRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 1
+  m_SortingLayerID: -115611615
+  m_SortingLayer: -1
+  m_SortingOrder: 0
   m_ChunkSize: {x: 32, y: 32, z: 32}
   m_ChunkCullingBounds: {x: 0, y: 0, z: 0}
   m_MaxChunkCount: 16
