@@ -1,16 +1,24 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using Random = UnityEngine.Random;
 
 public partial class MapGenerator : MonoBehaviour
 {
-    [Header("Secret Room Parameters")]
-    [SerializeField] private int nbSecretRoom;
-    [SerializeField] private int secretRoomSize;
+    private int nbSecretRoom;
 
+    [Header("Secret Room Parameters")]
+    [SerializeField] private int minNbSecretRoom;
+    [SerializeField] private int maxNbSecretRoom;
+    [SerializeField] private int secretRoomSize;
+    [SerializeField] private GameObject destructibleWall;
+
+    [Header("Secret Room Contents Parameters")]
+    [SerializeField] private GameObject chest;
     [SerializeField][Range(0, 100)] private int itemProbability;
     [SerializeField][Range(0, 100)] private int mobProbability;
     [SerializeField][Range(0, 100)] private int chestProbability;
@@ -20,6 +28,10 @@ public partial class MapGenerator : MonoBehaviour
     /// </summary>
     private void GenerateSecretRoom()
     {
+        //define a number of secret room to spawn
+        nbSecretRoom = Random.Range(minNbSecretRoom, maxNbSecretRoom);
+
+
         //determine nb secret room can be placed
         //the nb is dependante of the size's map and the size of a secret room
         //bigger is the map and smaller is a secret room, more secret room are created
@@ -110,14 +122,17 @@ public partial class MapGenerator : MonoBehaviour
             }
             #endregion
             
-            #region Place Tiles
+            #region Place Tiles and Destructible Wall
             //Create floor
             GenerateFloor(minXPosRoom, minYPosRoom, secretRoomSize, secretRoomSize);
 
             //Create Wall
             GenerateWall(minXPosRoom, minYPosRoom, secretRoomSize, secretRoomSize);
 
-            wallMap.SetTile(posEnterSecretRoom, destructibleWallTile);
+            wallMap.SetTile(posEnterSecretRoom, null);
+            Vector3 posDestructibleWall = new Vector3(wallMap.tileAnchor.x, wallMap.tileAnchor.y, 0) 
+                                          + posEnterSecretRoom;
+            Instantiate(destructibleWall, posDestructibleWall, new Quaternion());
             #endregion
 
             posSecretsRooms.Add(posEnterSecretRoom, orientationEnterSecretRoom);
@@ -171,19 +186,17 @@ public partial class MapGenerator : MonoBehaviour
             int random = Random.Range(0, maxRandom);
 
             #region Spawn a item, a mob or a chest based on the random
-            if (random < itemProbability)
+            if (random < itemProbability) //Item
             {
                 ItemSpawnerManager.instance.SpawnSpecificNbItems(1, posObjectInSecretRoom, 0, new Quaternion());
             }
-            else if (random < itemProbability + mobProbability)
+            else if (random < itemProbability + mobProbability) //Mob
             {
-                //Spawn a enemy
                 Debug.Log("Spawn a enemy");
             }
-            else
+            else //Chest
             {
-                //Spawn a chest
-                Debug.Log("Spawn a chest");
+                Instantiate(chest, posObjectInSecretRoom, new Quaternion());
             }
             #endregion
         }

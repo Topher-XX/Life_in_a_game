@@ -110,8 +110,10 @@ public class ItemSpawnerManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Determine the number of objects to spawn based on the player's chance stat
+    /// Determine the number of bonus item to spawn based on the player's chance stat
     /// </summary>
+    /// <param name="_luckState"></param>
+    /// <returns></returns>
     public int AddBonusItemToSpawn(int _luckState)
     {
         int nbBonusItemsToSpawn = (_luckState / itemBonusTier);

@@ -15,8 +15,18 @@ public class Item : MonoBehaviour
     [SerializeField] private int critRate;
 
 
-    
+    //Remplacer par une fonction d'interface
+    public void Interact()
+    {
+        //Ajouter les stats au joueur
+        //Enregistrer l'objet dans la liste des items
 
+        Destroy(gameObject);
+    }
+
+
+
+    #region Getter & Setter
     public int Strength { get { return strength; } }
     public int Dexterity { get { return dexterity; } }
     public int Intelligence { get { return intelligence; } }
@@ -26,4 +36,5 @@ public class Item : MonoBehaviour
 
     public int Hp { get { return hp; } }
     public int CritRate { get {  return critRate; } }
+    #endregion
 }

@@ -48,7 +48,7 @@ MonoBehaviour:
   - {fileID: 6143628187889000813, guid: e8071fb690e55564a943ca92ff7e19c2, type: 3}
   - {fileID: 5659188046068983650, guid: 36186a8ed896529468195ddb7a8b911c, type: 3}
   - {fileID: 4650380782106561392, guid: 3b7bc10c5034a2c429699ae32a46128b, type: 3}
-  mPrimaryStat: 3
-  mSecondaryStat: 2
-  mDirectStat: 1
+  mPrimaryStat: 1.5
+  mSecondaryStat: 1
+  mDirectStat: 0.5
   itemBonusTier: 3

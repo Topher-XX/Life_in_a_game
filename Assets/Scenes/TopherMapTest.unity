@@ -406,7 +406,7 @@ Transform:
   m_GameObject: {fileID: 1207479544}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.7953188, y: 0.48477593, z: -0.18987393}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -431,8 +431,11 @@ MonoBehaviour:
   floorTile: {fileID: 11400000, guid: d0d04bcb2d2f69e409efeb4b36546114, type: 2}
   wallTile: {fileID: 11400000, guid: c18e738dc228c82478ab79f80b03edc0, type: 2}
   destructibleWallTile: {fileID: 11400000, guid: b7065b98fe21b5c479d388f15d28c517, type: 2}
-  nbSecretRoom: 16
+  minNbSecretRoom: 5
+  maxNbSecretRoom: 16
   secretRoomSize: 5
+  destructibleWall: {fileID: 9055251575639491087, guid: 9ac8e07aff6946e4ea209297fb3cd277, type: 3}
+  chest: {fileID: 3274407856853039219, guid: 86c57202d499caa48a0ca31c58ecac42, type: 3}
   itemProbability: 50
   mobProbability: 30
   chestProbability: 10
