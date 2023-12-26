@@ -134,4 +134,7 @@ public class ItemSpawnerManager : MonoBehaviour
                (item.Charism + item.Luck) * mSecondaryStat +
                (item.Hp + item.CritRate) * mDirectStat;
     }
+
+
+    
 }

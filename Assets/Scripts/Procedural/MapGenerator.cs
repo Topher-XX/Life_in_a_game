@@ -28,6 +28,14 @@ public partial class MapGenerator : MonoBehaviour
 
     private void Start()
     {
+        if (!ceilingSecretRoom.GetComponent<HideSecretRoom>())
+        {
+            Debug.LogError("The CeilingSecretRoom don't contain script HideSecretRoom !\n" +
+                           "Generate Map fail");
+            return;
+        }
+        
+
         //Create the map's arena
         GenerateFloor(0, 0, mapLength, mapHeight);
         GenerateWall(0, 0, mapLength, mapHeight);

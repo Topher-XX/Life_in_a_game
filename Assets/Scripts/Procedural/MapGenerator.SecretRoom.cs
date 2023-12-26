@@ -1,10 +1,12 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using static UnityEngine.Rendering.DebugUI;
 using Random = UnityEngine.Random;
 
 public partial class MapGenerator : MonoBehaviour
@@ -15,7 +17,13 @@ public partial class MapGenerator : MonoBehaviour
     [SerializeField] private int minNbSecretRoom;
     [SerializeField] private int maxNbSecretRoom;
     [SerializeField] private int secretRoomSize;
+
+    [Header("Destructible Wall Parameters")]
     [SerializeField] private GameObject destructibleWall;
+    [SerializeField] private int destructibleWallSize;
+
+    [Tooltip("A game object for hides secret rooms. Need contains the script HideSecretRoom for generate map")]
+    [SerializeField] private GameObject ceilingSecretRoom;
 
     [Header("Secret Room Contents Parameters")]
     [SerializeField] private GameObject chest;
@@ -129,57 +137,62 @@ public partial class MapGenerator : MonoBehaviour
             //Create Wall
             GenerateWall(minXPosRoom, minYPosRoom, secretRoomSize, secretRoomSize);
 
+            //Remove walls for place destructible wall
             wallMap.SetTile(posEnterSecretRoom, null);
-            Vector3 posDestructibleWall = new Vector3(wallMap.tileAnchor.x, wallMap.tileAnchor.y, 0) 
-                                          + posEnterSecretRoom;
-            Instantiate(destructibleWall, posDestructibleWall, new Quaternion());
+            int destructibleWallLength = 0;
+            if (destructibleWallSize < secretRoomSize)
+            {
+                destructibleWallLength = (destructibleWallSize - 1) / 2;
+            }
+            else
+            {
+                Debug.LogWarning("destructibleWallSize is larger than secretRoomSize ! \n" +
+                                 "Please, reduce destructibleWallSize or increase secretRoomSize.\n" +
+                                 "destructibleWallSize is set to 1 for this session.");
+            }
+            if (orientationEnterSecretRoom is OrientationEnterSecretRoom.up or OrientationEnterSecretRoom.down)
+            {
+                for (int j = 1; j <= destructibleWallLength; j++)
+                {
+                    wallMap.SetTile(posEnterSecretRoom + Vector3Int.left * j, null);
+                    wallMap.SetTile(posEnterSecretRoom + Vector3Int.right * j, null);
+                }
+
+                //Place destructible wall
+                Vector3 posDestructibleWall = new Vector3(wallMap.tileAnchor.x, wallMap.tileAnchor.y, 0)
+                                              + posEnterSecretRoom;
+                Quaternion destrutibelWallRotation = Quaternion.Euler(0, 0, 0);
+                Instantiate(destructibleWall, posDestructibleWall, destrutibelWallRotation);
+            }
+            else if (orientationEnterSecretRoom is OrientationEnterSecretRoom.left or OrientationEnterSecretRoom.right)
+            {
+                for (int j = 1; j <= destructibleWallLength; j++)
+                {
+                    wallMap.SetTile(posEnterSecretRoom + Vector3Int.up * j, null);
+                    wallMap.SetTile(posEnterSecretRoom + Vector3Int.down * j, null);
+                }
+
+                //Place destructible wall
+                Vector3 posDestructibleWall = new Vector3(wallMap.tileAnchor.x, wallMap.tileAnchor.y, 0)
+                                              + posEnterSecretRoom;
+                Quaternion destrutibelWallRotation = Quaternion.Euler(0, 0, 90);
+                Instantiate(destructibleWall, posDestructibleWall, destrutibelWallRotation);
+            }
+            
+
+            
             #endregion
 
             posSecretsRooms.Add(posEnterSecretRoom, orientationEnterSecretRoom);
             availableSpotSecretRoom.Remove(posEnterSecretRoom);
         }
 
-        #region  Fill all secrets rooms with a item, a mob or a chest
+        #region  Fill all secrets rooms with a item, a mob or a chest and add a ceiling for hide them
         for (int i = 0; i < posSecretsRooms.Count; i++)
         {
-            float xPosObjectInSecretRoom = 0;
-            float yPosObjectInSecretRoom = 0;
+            Vector3 posSecretRoomCenter = GetSecretRoomCenter(posSecretsRooms.ElementAt(i).Value, 
+                                                            posSecretsRooms.ElementAt(i).Key);
 
-            #region Determine Object's Position in the room from room's orientation
-            switch (posSecretsRooms.ElementAt(i).Value)
-            {
-                //Up
-                case OrientationEnterSecretRoom.up:
-                    xPosObjectInSecretRoom = floorMap.tileAnchor.x;
-                    yPosObjectInSecretRoom = secretRoomSize / 2 + floorMap.tileAnchor.y;
-                    break;
-
-                //Down
-                case OrientationEnterSecretRoom.down:
-                    xPosObjectInSecretRoom = floorMap.tileAnchor.x;
-                    yPosObjectInSecretRoom = -secretRoomSize / 2 + floorMap.tileAnchor.y;
-                    break;
-
-                //Left
-                case OrientationEnterSecretRoom.left:
-                    xPosObjectInSecretRoom = -secretRoomSize / 2 + floorMap.tileAnchor.x;
-                    yPosObjectInSecretRoom = floorMap.tileAnchor.y;
-                    break;
-
-                //Right
-                case OrientationEnterSecretRoom.right:
-                    xPosObjectInSecretRoom = secretRoomSize / 2 + floorMap.tileAnchor.x;
-                    yPosObjectInSecretRoom = floorMap.tileAnchor.y;
-                    break;
-                
-                default:
-                    Debug.Log("A Secret room has not Orientation when place secret room contain! ");
-                    break;
-            }
-            #endregion
-
-            Vector3 posObjectInSecretRoom = posSecretsRooms.ElementAt(i).Key +
-                                           new Vector3(xPosObjectInSecretRoom, yPosObjectInSecretRoom, 0);
 
 
             int maxRandom = itemProbability + mobProbability + chestProbability;
@@ -188,7 +201,7 @@ public partial class MapGenerator : MonoBehaviour
             #region Spawn a item, a mob or a chest based on the random
             if (random < itemProbability) //Item
             {
-                ItemSpawnerManager.instance.SpawnSpecificNbItems(1, posObjectInSecretRoom, 0, new Quaternion());
+                ItemSpawnerManager.instance.SpawnSpecificNbItems(1, posSecretRoomCenter, 0, new Quaternion());
             }
             else if (random < itemProbability + mobProbability) //Mob
             {
@@ -196,14 +209,56 @@ public partial class MapGenerator : MonoBehaviour
             }
             else //Chest
             {
-                Instantiate(chest, posObjectInSecretRoom, new Quaternion());
+                Instantiate(chest, posSecretRoomCenter, new Quaternion());
             }
+
+            GameObject ceiling = Instantiate(ceilingSecretRoom, posSecretRoomCenter, new Quaternion());
+            ceiling.GetComponent<HideSecretRoom>().SetCeilingSize(secretRoomSize-2, secretRoomSize-2);
+
             #endregion
         }
         #endregion
+
+
+
     }
 
+    public Vector3 GetSecretRoomCenter(OrientationEnterSecretRoom orientationEnterSecretRoom, Vector3 posSecretRoomEnter)
+    {
+        Vector3 posSecretRoomCenter = new Vector3(0, 0, 0);
 
+        switch (orientationEnterSecretRoom)
+        {
+            //Up
+            case OrientationEnterSecretRoom.up:
+                posSecretRoomCenter.x = floorMap.tileAnchor.x;
+                posSecretRoomCenter.y = secretRoomSize / 2 + floorMap.tileAnchor.y;
+                break;
+
+            //Down
+            case OrientationEnterSecretRoom.down:
+                posSecretRoomCenter.x = floorMap.tileAnchor.x;
+                posSecretRoomCenter.y = -secretRoomSize / 2 + floorMap.tileAnchor.y;
+                break;
+
+            //Left
+            case OrientationEnterSecretRoom.left:
+                posSecretRoomCenter.x = -secretRoomSize / 2 + floorMap.tileAnchor.x;
+                posSecretRoomCenter.y = floorMap.tileAnchor.y;
+                break;
+
+            //Right
+            case OrientationEnterSecretRoom.right:
+                posSecretRoomCenter.x = secretRoomSize / 2 + floorMap.tileAnchor.x;
+                posSecretRoomCenter.y = floorMap.tileAnchor.y;
+                break;
+
+            default:
+                Debug.Log("A Secret room has not Orientation when place secret room contain! ");
+                break;
+        }
+        return posSecretRoomCenter += posSecretRoomEnter;
+    }
 
 
 }

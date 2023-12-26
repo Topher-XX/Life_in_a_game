@@ -1,6 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class Item : MonoBehaviour
 {
@@ -13,7 +15,6 @@ public class Item : MonoBehaviour
 
     [SerializeField] private int hp;
     [SerializeField] private int critRate;
-
 
     //Remplacer par une fonction d'interface
     public void Interact()
