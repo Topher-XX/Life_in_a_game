@@ -7,7 +7,7 @@ public class Spawner : MonoBehaviour
 {
 
     public GameObject sol;
-    private UnityEngine.AI.NavMeshAgent navSol;
+    
     // Start is called before the first frame update
     void Start()
     {

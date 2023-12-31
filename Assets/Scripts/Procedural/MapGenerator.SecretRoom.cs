@@ -12,6 +12,8 @@ using Random = UnityEngine.Random;
 public partial class MapGenerator : MonoBehaviour
 {
     private int nbSecretRoom;
+    //private GameManager gameManager;
+    public GameObject truc;
 
     [Header("Secret Room Parameters")]
     [SerializeField] private int minNbSecretRoom;
@@ -193,7 +195,7 @@ public partial class MapGenerator : MonoBehaviour
             Vector3 posSecretRoomCenter = GetSecretRoomCenter(posSecretsRooms.ElementAt(i).Value, 
                                                             posSecretsRooms.ElementAt(i).Key);
 
-
+            
 
             int maxRandom = itemProbability + mobProbability + chestProbability;
             int random = Random.Range(0, maxRandom);
@@ -206,6 +208,10 @@ public partial class MapGenerator : MonoBehaviour
             else if (random < itemProbability + mobProbability) //Mob
             {
                 Debug.Log("Spawn a enemy");
+                
+                // GameManager.GMInstance.SpawnRandomEnemy(posSecretRoomCenter, 2, false);
+                
+                
             }
             else //Chest
             {
