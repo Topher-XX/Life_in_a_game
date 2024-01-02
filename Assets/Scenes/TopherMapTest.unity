@@ -428,14 +428,16 @@ MonoBehaviour:
   wallMap: {fileID: 2083240623}
   mapLength: 20
   mapHeight: 20
+  doorsLength: 4
+  corriderHeight: 10
   floorTile: {fileID: 11400000, guid: d0d04bcb2d2f69e409efeb4b36546114, type: 2}
   wallTile: {fileID: 11400000, guid: c18e738dc228c82478ab79f80b03edc0, type: 2}
   destructibleWallTile: {fileID: 11400000, guid: b7065b98fe21b5c479d388f15d28c517, type: 2}
-  minNbSecretRoom: 5
-  maxNbSecretRoom: 5
-  secretRoomSize: 7
+  minNbSecretRoom: 6
+  maxNbSecretRoom: 12
+  secretRoomSize: 5
   destructibleWall: {fileID: 9055251575639491087, guid: 9ac8e07aff6946e4ea209297fb3cd277, type: 3}
-  destructibleWallSize: 3
+  destructibleWallSize: 1
   ceilingSecretRoom: {fileID: 8447043210463578275, guid: 0ce7b19693c48d2469bee94d65021174, type: 3}
   chest: {fileID: 3274407856853039219, guid: 86c57202d499caa48a0ca31c58ecac42, type: 3}
   itemProbability: 50

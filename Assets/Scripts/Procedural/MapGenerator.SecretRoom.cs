@@ -47,11 +47,11 @@ public partial class MapGenerator : MonoBehaviour
         int nbSecretRoomOnALength = mapLength / secretRoomSize;
         int nbSecretRoomOnAHeight = mapHeight / secretRoomSize;
 
-        #region Check if the Number Secret Room is not greater than the map can have.
+        #region Check if the Number Secret Room is not greater than the map can have
         int maxSecretRoomPossible = nbSecretRoom;
-        if (maxSecretRoomPossible > (nbSecretRoomOnAHeight + nbSecretRoomOnALength) * 2)
+        if (maxSecretRoomPossible > (nbSecretRoomOnAHeight + nbSecretRoomOnALength) * 2 - 4)
         {
-            maxSecretRoomPossible = (nbSecretRoomOnAHeight + nbSecretRoomOnALength) * 2;
+            maxSecretRoomPossible = (nbSecretRoomOnAHeight + nbSecretRoomOnALength) * 2 - 4;
 
             Debug.LogWarning("the number Secret Room requested if greater than " +
                              "the map can contain !\n" +
@@ -60,7 +60,7 @@ public partial class MapGenerator : MonoBehaviour
                              maxSecretRoomPossible);
         }
         #endregion
-
+        
         //All Available Secret Room Position possible
         Dictionary<Vector3Int, OrientationEnterSecretRoom> availableSpotSecretRoom = new Dictionary<Vector3Int, OrientationEnterSecretRoom>();
 
@@ -69,12 +69,16 @@ public partial class MapGenerator : MonoBehaviour
         for (int i = 0; i < nbSecretRoomOnALength; i++)
         {
             int xPos = i * secretRoomSize + secretRoomSize / 2;
-            
-            Vector3Int topPos = new Vector3Int(xPos, mapHeight - 1, 0);
-            availableSpotSecretRoom.Add(topPos, OrientationEnterSecretRoom.up);
 
-            Vector3Int bottomPos = new Vector3Int(xPos, 0, 0);
-            availableSpotSecretRoom.Add(bottomPos, OrientationEnterSecretRoom.down);
+            if (i * secretRoomSize + secretRoomSize < leftPosDoorEnter.x || i * secretRoomSize > rightPosDoorEnter.x)
+            {
+                Vector3Int topPos = new Vector3Int(xPos, mapHeight - 1, 0);
+                Vector3Int bottomPos = new Vector3Int(xPos, 0, 0);
+
+                availableSpotSecretRoom.Add(topPos, OrientationEnterSecretRoom.up);
+                availableSpotSecretRoom.Add(bottomPos, OrientationEnterSecretRoom.down);
+            }
+
         }
 
         //Get all available position on left and right
@@ -130,19 +134,22 @@ public partial class MapGenerator : MonoBehaviour
             }
             #endregion
             
-            #region Place Tiles and Destructible Wall
+            #region Place Floors and Walls
             //Create floor
             GenerateFloor(minXPosRoom, minYPosRoom, secretRoomSize, secretRoomSize);
 
             //Create Wall
             GenerateWall(minXPosRoom, minYPosRoom, secretRoomSize, secretRoomSize);
+            #endregion
 
-            //Remove walls for place destructible wall
+            #region Remove some walls for place destructible wall
             wallMap.SetTile(posEnterSecretRoom, null);
+
+            //Check if the destructible wall is not larger than secretRoomSize
             int destructibleWallLength = 0;
             if (destructibleWallSize < secretRoomSize)
             {
-                destructibleWallLength = (destructibleWallSize - 1) / 2;
+                destructibleWallLength = destructibleWallSize / 2;
             }
             else
             {
@@ -150,39 +157,39 @@ public partial class MapGenerator : MonoBehaviour
                                  "Please, reduce destructibleWallSize or increase secretRoomSize.\n" +
                                  "destructibleWallSize is set to 1 for this session.");
             }
+
+            //Check is the secret room is on the up or down of the arena
             if (orientationEnterSecretRoom is OrientationEnterSecretRoom.up or OrientationEnterSecretRoom.down)
             {
-                for (int j = 1; j <= destructibleWallLength; j++)
+                for (int j = 0; j < destructibleWallSize; j++)
                 {
-                    wallMap.SetTile(posEnterSecretRoom + Vector3Int.left * j, null);
-                    wallMap.SetTile(posEnterSecretRoom + Vector3Int.right * j, null);
-                }
+                    //Remove wall
+                    Vector3Int wallPos = posEnterSecretRoom - Vector3Int.right * destructibleWallLength + Vector3Int.right * j;
+                    wallMap.SetTile(wallPos, null);
 
-                //Place destructible wall
-                Vector3 posDestructibleWall = new Vector3(wallMap.tileAnchor.x, wallMap.tileAnchor.y, 0)
-                                              + posEnterSecretRoom;
-                Quaternion destrutibelWallRotation = Quaternion.Euler(0, 0, 0);
-                Instantiate(destructibleWall, posDestructibleWall, destrutibelWallRotation);
+                    //Place destructible wall
+                    Vector3 posDestructibleWall = new Vector3(wallMap.tileAnchor.x, wallMap.tileAnchor.y, 0)
+                                                  + wallPos;
+                    Instantiate(destructibleWall, posDestructibleWall, new Quaternion());
+                }
             }
+            //Check if the secret room is on the left or right of the arena
             else if (orientationEnterSecretRoom is OrientationEnterSecretRoom.left or OrientationEnterSecretRoom.right)
             {
-                for (int j = 1; j <= destructibleWallLength; j++)
+                for (int j = 0; j < destructibleWallSize; j++)
                 {
-                    wallMap.SetTile(posEnterSecretRoom + Vector3Int.up * j, null);
-                    wallMap.SetTile(posEnterSecretRoom + Vector3Int.down * j, null);
+                    //Remove wall
+                    Vector3Int wallPos = posEnterSecretRoom - Vector3Int.up * destructibleWallLength + Vector3Int.up * j;
+                    wallMap.SetTile(wallPos, null);
+
+                    //Place destructible wall
+                    Vector3 posDestructibleWall = new Vector3(wallMap.tileAnchor.x, wallMap.tileAnchor.y, 0)
+                                                  + wallPos;
+                    Instantiate(destructibleWall, posDestructibleWall, new Quaternion());
                 }
-
-                //Place destructible wall
-                Vector3 posDestructibleWall = new Vector3(wallMap.tileAnchor.x, wallMap.tileAnchor.y, 0)
-                                              + posEnterSecretRoom;
-                Quaternion destrutibelWallRotation = Quaternion.Euler(0, 0, 90);
-                Instantiate(destructibleWall, posDestructibleWall, destrutibelWallRotation);
             }
-            
-
-            
             #endregion
-
+            
             posSecretsRooms.Add(posEnterSecretRoom, orientationEnterSecretRoom);
             availableSpotSecretRoom.Remove(posEnterSecretRoom);
         }
@@ -231,26 +238,59 @@ public partial class MapGenerator : MonoBehaviour
         {
             //Up
             case OrientationEnterSecretRoom.up:
-                posSecretRoomCenter.x = floorMap.tileAnchor.x;
-                posSecretRoomCenter.y = secretRoomSize / 2 + floorMap.tileAnchor.y;
+                if (secretRoomSize % 2 == 0)
+                {
+                    posSecretRoomCenter.x = 0;
+                    posSecretRoomCenter.y = secretRoomSize / 2;
+                }
+                else
+                {
+                    posSecretRoomCenter.x = floorMap.tileAnchor.x;
+                    posSecretRoomCenter.y = secretRoomSize / 2 + floorMap.tileAnchor.y;
+                }
                 break;
 
             //Down
             case OrientationEnterSecretRoom.down:
-                posSecretRoomCenter.x = floorMap.tileAnchor.x;
-                posSecretRoomCenter.y = -secretRoomSize / 2 + floorMap.tileAnchor.y;
+                if (secretRoomSize % 2 == 0)
+                {
+                    posSecretRoomCenter.x = 0;
+                    posSecretRoomCenter.y = -secretRoomSize / 2 + 1;
+                }
+                else
+                {
+                    posSecretRoomCenter.x = floorMap.tileAnchor.x;
+                    posSecretRoomCenter.y = -secretRoomSize / 2 + floorMap.tileAnchor.y;
+                }
+                
                 break;
 
             //Left
             case OrientationEnterSecretRoom.left:
-                posSecretRoomCenter.x = -secretRoomSize / 2 + floorMap.tileAnchor.x;
-                posSecretRoomCenter.y = floorMap.tileAnchor.y;
+                if (secretRoomSize % 2 == 0)
+                {
+                    posSecretRoomCenter.x = -secretRoomSize / 2 + 1;
+                    posSecretRoomCenter.y = 0;
+                }
+                else
+                {
+                    posSecretRoomCenter.x = -secretRoomSize / 2 + floorMap.tileAnchor.x;
+                    posSecretRoomCenter.y = floorMap.tileAnchor.y;
+                }
                 break;
 
             //Right
             case OrientationEnterSecretRoom.right:
-                posSecretRoomCenter.x = secretRoomSize / 2 + floorMap.tileAnchor.x;
-                posSecretRoomCenter.y = floorMap.tileAnchor.y;
+                if (secretRoomSize % 2 == 0)
+                {
+                    posSecretRoomCenter.x = secretRoomSize / 2;
+                    posSecretRoomCenter.y = 0;
+                }
+                else
+                {
+                    posSecretRoomCenter.x = secretRoomSize / 2 + floorMap.tileAnchor.x;
+                    posSecretRoomCenter.y = floorMap.tileAnchor.y;
+                }
                 break;
 
             default:

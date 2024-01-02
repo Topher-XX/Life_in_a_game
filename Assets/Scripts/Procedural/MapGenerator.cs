@@ -20,11 +20,21 @@ public partial class MapGenerator : MonoBehaviour
     [Header("Map Parameters")]
     [SerializeField] private int mapLength;
     [SerializeField] private int mapHeight;
+    [SerializeField] private int doorsLength;
+    [SerializeField] private int corriderHeight;
 
     [Header("Map Sprites")]
     [SerializeField] private Tile floorTile;
     [SerializeField] private Tile wallTile;
     [SerializeField] private Tile destructibleWallTile;
+
+    Vector3Int posDoorEnter;
+    Vector3Int leftPosDoorEnter;
+    Vector3Int rightPosDoorEnter;
+
+    Vector3Int posDoorExit;
+    Vector3Int leftPosDoorExit;
+    Vector3Int rightPosDoorExit;
 
     private void Start()
     {
@@ -34,11 +44,23 @@ public partial class MapGenerator : MonoBehaviour
                            "Generate Map fail");
             return;
         }
-        
+
+        //Detect corridor enter and exit location
+        posDoorEnter = new Vector3Int(mapLength / 2, 0, 0);
+        leftPosDoorEnter = posDoorEnter + Vector3Int.left * doorsLength / 2;
+        rightPosDoorEnter = posDoorEnter + Vector3Int.right * doorsLength / 2;
+
+        posDoorExit = new Vector3Int(mapLength / 2, mapHeight - 1, 0);
+        leftPosDoorExit = posDoorExit + Vector3Int.left * doorsLength / 2;
+        rightPosDoorExit = posDoorExit + Vector3Int.right * doorsLength / 2;
+
+        //leftPosDoorEnter = posDoorEnter + Vector3Int.left * doorsLength / 2;
+        //rightPosDoorEnter = posDoorEnter + Vector3Int.right * doorsLength / 2;
 
         //Create the map's arena
         GenerateFloor(0, 0, mapLength, mapHeight);
         GenerateWall(0, 0, mapLength, mapHeight);
+        GenerateCorridorsEnterExit();
 
         GenerateSecretRoom();
     }
@@ -99,6 +121,33 @@ public partial class MapGenerator : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// generates doors and corridors for enter and exit of the level
+    /// </summary>
+    private void GenerateCorridorsEnterExit()
+    {
+        //enter
+        GenerateFloor(leftPosDoorEnter.x, leftPosDoorEnter.y - corriderHeight + 1, doorsLength, corriderHeight);
+        GenerateWall(leftPosDoorEnter.x, leftPosDoorEnter.y - corriderHeight + 1, doorsLength, corriderHeight);
 
+        for (int i = leftPosDoorEnter.x + 1; i < rightPosDoorEnter.x - 1; i++)
+        {
+            Vector3Int thisPosDoorEnter = new Vector3Int(i, leftPosDoorEnter.y, 0);
+            wallMap.SetTile(thisPosDoorEnter, null);
+
+        }
+
+        //exit
+        GenerateFloor(leftPosDoorExit.x, leftPosDoorExit.y, doorsLength, corriderHeight);
+        GenerateWall(leftPosDoorExit.x, leftPosDoorExit.y, doorsLength, corriderHeight);
+
+        for (int i = leftPosDoorExit.x + 1; i < rightPosDoorExit.x - 1; i++)
+        {
+            Vector3Int thisPosDoorExit = new Vector3Int(i, leftPosDoorExit.y, 0);
+            wallMap.SetTile(thisPosDoorExit, null);
+
+        }
+
+    }
 
 }
