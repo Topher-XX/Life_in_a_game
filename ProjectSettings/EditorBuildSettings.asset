@@ -8,4 +8,13 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/SampleScene.unity
     guid: 8c9cfa26abfee488c85f1582747f6a02
+  - enabled: 1
+    path: Assets/Scenes/ArenaLevel.unity
+    guid: 3973c3f9b6cb09d4c826525ea3038873
+  - enabled: 1
+    path: Assets/Scenes/Hub.unity
+    guid: 07bf035b7e3d4c447a4c710f8389fe6e
+  - enabled: 1
+    path: Assets/Scenes/BossArena.unity
+    guid: 2abb8af79ff217943888c73b317e3d3e
   m_configObjects: {}

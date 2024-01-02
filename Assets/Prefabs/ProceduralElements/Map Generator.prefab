@@ -1,0 +1,67 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &8996632359074984213
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3352814876137510563}
+  - component: {fileID: 435995025596241063}
+  m_Layer: 0
+  m_Name: Map Generator
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3352814876137510563
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8996632359074984213}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &435995025596241063
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8996632359074984213}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0ad54b98748484847bddfeb3812396b8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  floorMap: {fileID: 0}
+  wallMap: {fileID: 0}
+  mapLength: 20
+  mapHeight: 20
+  corridorLength: 4
+  corridorHeight: 10
+  floorTile: {fileID: 11400000, guid: d0d04bcb2d2f69e409efeb4b36546114, type: 2}
+  wallTile: {fileID: 11400000, guid: c18e738dc228c82478ab79f80b03edc0, type: 2}
+  door: {fileID: 8663941292773282877, guid: 330750339bc40c149b24f1e95af397e5, type: 3}
+  transitionLevelTrigger: {fileID: 6991786077352916074, guid: 22379b6ec0e29334d93fc5a110f71eb9, type: 3}
+  playerSpawn: {fileID: 4046243052487993937, guid: 443857409858dce47890e584c2e3f73b, type: 3}
+  minNbSecretRoom: 6
+  maxNbSecretRoom: 12
+  secretRoomSize: 5
+  destructibleWall: {fileID: 9055251575639491087, guid: 9ac8e07aff6946e4ea209297fb3cd277, type: 3}
+  destructibleWallSize: 3
+  ceilingSecretRoom: {fileID: 8447043210463578275, guid: 0ce7b19693c48d2469bee94d65021174, type: 3}
+  chest: {fileID: 3274407856853039219, guid: 86c57202d499caa48a0ca31c58ecac42, type: 3}
+  itemProbability: 50
+  mobProbability: 30
+  chestProbability: 10

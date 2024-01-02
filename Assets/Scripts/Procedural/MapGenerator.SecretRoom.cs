@@ -70,7 +70,7 @@ public partial class MapGenerator : MonoBehaviour
         {
             int xPos = i * secretRoomSize + secretRoomSize / 2;
 
-            if (i * secretRoomSize + secretRoomSize < leftPosDoorEnter.x || i * secretRoomSize > rightPosDoorEnter.x)
+            if (i * secretRoomSize + secretRoomSize < leftPosCorridorEnter.x || i * secretRoomSize > rightPosCorridorEnter.x)
             {
                 Vector3Int topPos = new Vector3Int(xPos, mapHeight - 1, 0);
                 Vector3Int bottomPos = new Vector3Int(xPos, 0, 0);
@@ -230,6 +230,12 @@ public partial class MapGenerator : MonoBehaviour
 
     }
 
+    /// <summary>
+    /// Get the center of a secret room from the enter and the orientation of this room
+    /// </summary>
+    /// <param name="orientationEnterSecretRoom"></param>
+    /// <param name="posSecretRoomEnter"></param>
+    /// <returns></returns>
     public Vector3 GetSecretRoomCenter(OrientationEnterSecretRoom orientationEnterSecretRoom, Vector3 posSecretRoomEnter)
     {
         Vector3 posSecretRoomCenter = new Vector3(0, 0, 0);
