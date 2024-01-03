@@ -2,17 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HealingElement : MonoBehaviour
+public class HealingElement : MonoBehaviour, IInteractInterface
 {
     [SerializeField] private float amountHeal;
     private bool isUsed;
 
-    // Wait to create interface Interact
-    public void Interact()
+    void IInteractInterface.Interact()
     {
         if (!isUsed)
         {
-            //Soigner le joueur
+            //Heal the player
         }
         else
         {

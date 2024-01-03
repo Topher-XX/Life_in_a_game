@@ -138,7 +138,7 @@ public partial class MapGenerator : MonoBehaviour
     /// </summary>
     private void GenerateCorridorsEnterExit()
     {
-        //enter
+        //enter corridor
         GenerateFloor(leftPosCorridorEnter.x, leftPosCorridorEnter.y - corridorHeight + 1, corridorLength, corridorHeight);
         GenerateWall(leftPosCorridorEnter.x, leftPosCorridorEnter.y - corridorHeight + 1, corridorLength, corridorHeight);
 
@@ -152,7 +152,7 @@ public partial class MapGenerator : MonoBehaviour
 
         }
 
-        //exit
+        //exit corridor
         GenerateFloor(leftPosCorridorExit.x, leftPosCorridorExit.y, corridorLength, corridorHeight);
         GenerateWall(leftPosCorridorExit.x, leftPosCorridorExit.y, corridorLength, corridorHeight);
 
@@ -166,6 +166,7 @@ public partial class MapGenerator : MonoBehaviour
 
         }
 
+        //Place the PlayerSpawn and the TransitionLevelTrigger
         Instantiate(playerSpawn, posCorridorEnter + new Vector3Int(0, -corridorHeight / 2, 0), new Quaternion());
         Instantiate(transitionLevelTrigger, posCorridorExit + new Vector3Int(0, CorridorLength + 2, 0), new Quaternion());
 

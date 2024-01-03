@@ -135,6 +135,14 @@ public class ItemSpawnerManager : MonoBehaviour
                (item.Hp + item.CritRate) * mDirectStat;
     }
 
+    public GameObject GetRandomItem()
+    {
+        GameObject thisItem;
 
+        int randomIndex = Random.Range(0, items.Length);
+        thisItem = items[randomIndex];
+
+        return thisItem;
+    }
     
 }

@@ -11,9 +11,11 @@ public class TransitionLevel : MonoBehaviour
 
     private void Start()
     {
-        Vector2 boxCollider2DSize = new Vector2(MapGenerator.Instance.CorridorLength, 3);
-
-        GetComponent<BoxCollider2D>().size = boxCollider2DSize;
+        if (MapGenerator.Instance)
+        {
+            Vector2 boxCollider2DSize = new Vector2(MapGenerator.Instance.CorridorLength, 3);
+            GetComponent<BoxCollider2D>().size = boxCollider2DSize;
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D other)

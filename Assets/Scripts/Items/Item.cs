@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class Item : MonoBehaviour
+public class Item : MonoBehaviour, IInteractInterface
 {
     [SerializeField] private int strength;
     [SerializeField] private int dexterity;
@@ -16,11 +16,10 @@ public class Item : MonoBehaviour
     [SerializeField] private int hp;
     [SerializeField] private int critRate;
 
-    //Remplacer par une fonction d'interface
-    public void Interact()
+    void IInteractInterface.Interact()
     {
-        //Ajouter les stats au joueur
-        //Enregistrer l'objet dans la liste des items
+        //Add item's stat to player's stat
+        //Add item to the player item list
 
         Destroy(gameObject);
     }
