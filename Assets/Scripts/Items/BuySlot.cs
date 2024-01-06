@@ -17,9 +17,9 @@ public class BuySlot : MonoBehaviour, IInteractInterface
 
     void IInteractInterface.Interact()
     {
-        //if have money -> Buy
+        //if player have money -> can Buy
         Instantiate(itemToSell, transform.position, new Quaternion());
-
         Destroy(gameObject); // test
+
     }
 }
