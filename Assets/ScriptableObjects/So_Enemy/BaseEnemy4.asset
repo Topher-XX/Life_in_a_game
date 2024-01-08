@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d22405ae2db7246f0b70e5b9f0b87834, type: 3}
-  m_Name: BaseEnemy2
+  m_Name: BaseEnemy4
   m_EditorClassIdentifier: 
   healthPoint: 0
   strenght: 0
@@ -19,4 +19,4 @@ MonoBehaviour:
   defPercent: 0
   Charisma: 0
   Chance: 0
-  percentOfSpawn: 53
+  percentOfSpawn: 357

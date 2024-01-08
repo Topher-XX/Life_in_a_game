@@ -15,12 +15,15 @@ public abstract class Enemy :MonoBehaviour
     protected int defPercent;
     protected GameObject player;
     protected GameManager gameManager;
+    protected State currentState = State._idle;
+    private Rigidbody rb;
 
     public enum State
     {
-        _Idle,
-        _Follow,
-        _Attack,
+        _idle,
+        _follow,
+        _attack,
+        _checkingPath,
         
     }
 
@@ -39,6 +42,7 @@ public abstract class Enemy :MonoBehaviour
 
     public virtual void Start()
     {
+        rb = GetComponent<Rigidbody>();
         player = GameObject.FindGameObjectWithTag("Player");
         gameManager = GameManager.GMInstance;
     }
@@ -49,6 +53,8 @@ public abstract class Enemy :MonoBehaviour
     {
 
     }
+
+
     public  void CheckDamage(float Damage,out bool kill)
     {
         var tookDamage = health - Damage;
@@ -99,8 +105,24 @@ public abstract class Enemy :MonoBehaviour
 
     public virtual void Update()
     {
+        switch (currentState)
+        {
+            case State._idle:
+                IsIdling();
+                break;
+            case State._follow:
+                IsFollowing();
+                break;
+            case State._attack:
+                IsAttacking();
+                break;
+            case State._checkingPath:
+                IsCheckingPath();
+                break;
 
-    }
+
+        }
+        }
     public virtual void FixedUpdate()
     {
 
@@ -110,4 +132,31 @@ public abstract class Enemy :MonoBehaviour
     {
 
     }
+
+    public virtual void IsIdling()
+    {
+
+    }
+
+    public virtual void IsFollowing()
+    {
+
+    }
+
+    public virtual void IsAttacking()
+    {
+
+    }
+
+    public virtual void IsCheckingPath()
+    {
+
+    }
+
+    public virtual void OnColliderEnter()
+    {
+
+    }
+
+
 }

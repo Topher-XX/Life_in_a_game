@@ -12,8 +12,8 @@ using Random = UnityEngine.Random;
 public partial class MapGenerator : MonoBehaviour
 {
     private int nbSecretRoom;
-    //private GameManager gameManager;
-    public GameObject truc;
+    //private GameManager gameManager; ptet le prendre dans le start
+    
 
     [Header("Secret Room Parameters")]
     [SerializeField] private int minNbSecretRoom;
@@ -209,7 +209,7 @@ public partial class MapGenerator : MonoBehaviour
             {
                 Debug.Log("Spawn a enemy");
                 
-                // GameManager.GMInstance.SpawnRandomEnemy(posSecretRoomCenter, 2, false);
+                // GameManager.GMInstance.SpawnRandomEnemy(posSecretRoomCenter, 2, false);    // SpawningFonction Selected or random
                 
                 
             }

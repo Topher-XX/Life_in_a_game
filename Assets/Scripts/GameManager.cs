@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -10,11 +11,23 @@ public class GameManager : MonoBehaviour
     private float highScore;
     private float lastScore;
     public float multiplier = 1;
-    public GameObject[] monsters;
+    public GameObject[] monster;
+    private  int[] percentToSpawn;
+    private int Maxweight;
 
     private void Awake()
     {
         GMInstance = this;
+        
+    }
+
+    private void Start()
+    {
+        for(int i = 0; i < monster.Length ; i++)
+        {
+          var MonsterEnemyScript  =   monster[i].GetComponent<Enemy>();
+            Debug.Log(MonsterEnemyScript);
+        }
         
     }
 
@@ -40,7 +53,7 @@ public class GameManager : MonoBehaviour
             Debug.Log("SPawn");
 
             // je vais le changer  le randomMonster pour une fonction avec des Proba
-            var RandomMonster = Random.Range(0, monsters.Length - 1);
+            var RandomMonster = Random.Range(0, monster.Length - 1);
 
 
             var SpawnPos = new Vector3(0, 0, 0);
@@ -52,18 +65,18 @@ public class GameManager : MonoBehaviour
                 if ((SpawnPos.x == placeToSpawn.x) && (SpawnPos.y == placeToSpawn.y))
                 {
                     SpawnPos += new Vector3(Random.Range(-2, 2), Random.Range(-2, 2), 0);
-                    Instantiate(monsters[RandomMonster], SpawnPos, Quaternion.identity);
+                    Instantiate(monster[RandomMonster], SpawnPos, Quaternion.identity);
                 }
                 else
                 {
 
-                    Instantiate(monsters[RandomMonster], SpawnPos, Quaternion.identity);
+                    Instantiate(monster[RandomMonster], SpawnPos, Quaternion.identity);
                 }
             }
             else
             {
                 RandomPos(placeToSpawn, out SpawnPos);
-                Instantiate(monsters[RandomMonster], SpawnPos, Quaternion.identity);
+                Instantiate(monster[RandomMonster], SpawnPos, Quaternion.identity);
             }
         }
         
@@ -77,9 +90,15 @@ public class GameManager : MonoBehaviour
         
     }
 
-    public void SpawnSelecEnemy(Vector3 placeToSpawn, int nbrToSpawn)
+    public void SpawnSelectEnemy(Vector3 placeToSpawn, int nbrToSpawn,GameObject wantedMonster)
     {
 
+        for (int i = 0; i < nbrToSpawn; i++)
+        {
+            Debug.Log("SPawn");
+        }
     }
 
+
+    
 }

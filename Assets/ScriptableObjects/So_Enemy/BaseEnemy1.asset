@@ -16,5 +16,7 @@ MonoBehaviour:
   strenght: 5
   intel: 0
   dext: 2
+  defPercent: 0
   Charisma: 0
   Chance: 0
+  percentOfSpawn: 0
