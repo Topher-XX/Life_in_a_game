@@ -17,6 +17,8 @@ public abstract class Enemy :MonoBehaviour
     protected GameManager gameManager;
     protected State currentState = State._idle;
     private Rigidbody rb;
+    public int weight= 100;
+    public MonsterPanel monsterPanel;
 
     public enum State
     {
@@ -36,12 +38,15 @@ public abstract class Enemy :MonoBehaviour
         intel = baseStats.intel;
         health = baseStats.healthPoint;
         dext = baseStats.dext;
+        weight = baseStats.weight;
         //ranged = baseStats.ranged;
 
     }
 
     public virtual void Start()
     {
+       
+
         rb = GetComponent<Rigidbody>();
         player = GameObject.FindGameObjectWithTag("Player");
         gameManager = GameManager.GMInstance;

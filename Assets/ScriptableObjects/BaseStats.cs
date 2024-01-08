@@ -18,7 +18,7 @@ public class BaseStats : ScriptableObject
     [Header("Secondary Stats")]
     public float Charisma, Chance;
     [Header("Max Weight = 500")]
-    [Range(0,500)] public int percentOfSpawn;
+    [Range(0,500)] public int weight; // percent of spawn
 
 
 

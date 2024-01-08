@@ -12,12 +12,14 @@ public class GameManager : MonoBehaviour
     private float lastScore;
     public float multiplier = 1;
     public GameObject[] monster;
+    public GameObject monstersees;
     private  int[] percentToSpawn;
     private int Maxweight;
 
     private void Awake()
     {
         GMInstance = this;
+        Debug.Log(monster[0].GetComponent<Enemy>().weight);
         
     }
 
@@ -26,9 +28,12 @@ public class GameManager : MonoBehaviour
         for(int i = 0; i < monster.Length ; i++)
         {
           var MonsterEnemyScript  =   monster[i].GetComponent<Enemy>();
-            Debug.Log(MonsterEnemyScript);
+            Debug.Log(MonsterEnemyScript.weight);
         }
+
         
+        Debug.Log(monstersees.GetComponent<Enemy>().weight);
+
     }
 
 
