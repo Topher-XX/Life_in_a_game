@@ -7,6 +7,7 @@ public abstract class Enemy :MonoBehaviour
     //[]
     [Header("BaseStats")]
     public BaseStats  baseStats;
+
     protected float health;
     protected float dext;
     protected float intel;
@@ -17,8 +18,8 @@ public abstract class Enemy :MonoBehaviour
     protected GameManager gameManager;
     protected State currentState = State._idle;
     private Rigidbody rb;
-    public int weight= 100;
-    public MonsterPanel monsterPanel;
+    protected int weight= 100;
+    
 
     public enum State
     {
@@ -33,12 +34,14 @@ public abstract class Enemy :MonoBehaviour
 
     public virtual void Awake()
     {
+        gameManager = GameManager.GMInstance;
         defPercent = baseStats.defPercent;
         strenght=baseStats.strenght;
         intel = baseStats.intel;
         health = baseStats.healthPoint;
         dext = baseStats.dext;
         weight = baseStats.weight;
+        
         //ranged = baseStats.ranged;
 
     }

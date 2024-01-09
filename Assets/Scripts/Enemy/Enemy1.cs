@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class Enemy1 : Enemy
 {
-    //public new BaseStats  baseStats;
+    
 
     public override void Awake()
     {
-        
         base.Awake();
+        
         
     }
 

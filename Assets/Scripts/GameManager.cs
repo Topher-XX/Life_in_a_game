@@ -1,6 +1,4 @@
-using System.Collections;
 using System.Collections.Generic;
-using System.Threading;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -15,26 +13,30 @@ public class GameManager : MonoBehaviour
     public GameObject monstersees;
     private  int[] percentToSpawn;
     private int Maxweight;
+    private List<int> percentList;
 
     private void Awake()
     {
         GMInstance = this;
-        Debug.Log(monster[0].GetComponent<Enemy>().weight);
-        
+        percentList = new List<int>();
     }
 
     private void Start()
     {
-        for(int i = 0; i < monster.Length ; i++)
-        {
-          var MonsterEnemyScript  =   monster[i].GetComponent<Enemy>();
-            Debug.Log(MonsterEnemyScript.weight);
-        }
-
         
-        Debug.Log(monstersees.GetComponent<Enemy>().weight);
-
+        Maxweight = 0;
+        for(var i = 0; i < monster.Length ; i++)
+        {
+            var percent = monster[i].GetComponent<Enemy>().baseStats.weight;
+            percentList.Add(percent);
+           Maxweight +=  percent;
+        }
+        Debug.Log($"MaxWeight ={Maxweight}");
+        var listNbr = 0; 
+        GetRandomMonster(out listNbr);
+        Debug.Log($"le truc a spawn ={listNbr}");
     }
+    
 
 
     public void SetScore(float score )
@@ -55,10 +57,9 @@ public class GameManager : MonoBehaviour
     {
         for (int i = 0; i < nbrToSpawn; i++)
         {
-            Debug.Log("SPawn");
-
-            // je vais le changer  le randomMonster pour une fonction avec des Proba
-            var RandomMonster = Random.Range(0, monster.Length - 1);
+            // % de spawn de monstres
+            var RandomMonster = 0;
+            GetRandomMonster(out RandomMonster);
 
 
             var SpawnPos = new Vector3(0, 0, 0);
@@ -102,6 +103,25 @@ public class GameManager : MonoBehaviour
         {
             Debug.Log("SPawn");
         }
+    }
+    
+    private void GetRandomMonster(out int nbrMonster)
+    {
+        var i = 0;
+        var random = Random.Range(1,Maxweight);
+        for ( i=0;i<monster.Length;i++) 
+        {
+            if (random<percentList[i])
+            { 
+                nbrMonster = i;
+                break;
+            }
+            else
+            {
+                random -= percentList[i];
+            }
+        }
+        nbrMonster = i;
     }
 
 
